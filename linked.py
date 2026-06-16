@@ -29,9 +29,52 @@ if st.session_state["login"] == False:
     
 with st.sidebar:
     st.write("👤 Login sebagai Admin")
+
+    menu = st.radio(
+        "Menu",
+        [
+            "➕ Tambah",
+            "📋 Lihat",
+            "🔍 Cari",
+            "📦 Tambah Stok",
+            "➖ Kurangi Stok",
+            "✏️ Edit/Hapus",
+            "⚠️ Stok Menipis",
+            "📊 Statistik",
+            "🕒 Riwayat"
+        ]
+    )
+
     if st.button("Logout"):
         st.session_state["login"] = False
         st.rerun()
+        if menu == "➕ Tambah":
+    # kode tambah barang
+
+elif menu == "📋 Lihat":
+    # kode lihat barang
+
+elif menu == "🔍 Cari":
+    # kode cari barang
+
+elif menu == "📦 Tambah Stok":
+    # kode tambah stok
+
+elif menu == "➖ Kurangi Stok":
+    # kode kurangi stok
+
+elif menu == "✏️ Edit/Hapus":
+    # kode edit hapus
+
+elif menu == "⚠️ Stok Menipis":
+    # kode stok menipis
+
+elif menu == "📊 Statistik":
+    # kode statistik
+
+elif menu == "🕒 Riwayat":
+    # kode riwayat
+    
 
 class BarangNode:
     def __init__(self, kode, nama, kategori, stok, harga):
