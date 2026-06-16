@@ -31,18 +31,25 @@ with st.sidebar:
     st.write("👤 Login sebagai Admin")
 
     menu = st.radio(
-        "Menu",tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9 = st.tabs([
-    "➕ Tambah",
-    "📋 Lihat",
-    "🔍 Cari",
-    "📥 Tambah Stok",
-    "➖ Kurangi Stok",
-    "✏️ Edit/Hapus",
-    "⚠️ Stok Menipis",
-    "📊 Statistik",
-    "🕒 Riwayat"
-])
-      
+        "Menu",
+        [
+            "➕ Tambah",
+            "📋 Lihat",
+            "🔍 Cari",
+            "📦 Tambah Stok",
+            "➖ Kurangi Stok",
+            "✏️ Edit/Hapus",
+            "⚠️ Stok Menipis",
+            "📊 Statistik",
+            "🕒 Riwayat"
+        ]
+    )
+
+    if st.button("Logout"):
+        st.session_state["login"] = False
+        st.rerun()
+
+        
     if st.button("Logout"):
         st.session_state["login"] = False
         st.rerun()
