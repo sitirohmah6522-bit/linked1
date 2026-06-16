@@ -220,10 +220,10 @@ elif menu == "📊 Statistik":
     st.write("Total Nilai Gudang: Rp", total_nilai)
 
     if terbanyak:
-    st.write("Stok Terbanyak:", terbanyak.nama, "-", terbanyak.stok)
+        st.write("Stok Terbanyak:", terbanyak.nama, "-", terbanyak.stok)
 
     if tersedikit:
-    st.write("Stok Tersedikit:", tersedikit.nama, "-", tersedikit.stok)
+        st.write("Stok Tersedikit:", tersedikit.nama, "-", tersedikit.stok)
 
 elif menu == "📅 Laporan Per Tanggal":
     st.header("📅 Laporan Aktivitas Per Tanggal")
