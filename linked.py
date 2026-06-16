@@ -210,6 +210,21 @@ elif menu == "⚠️ Stok Menipis":
         st.success("Tidak ada stok yang menipis.")
 
 
+
+elif menu == "📊 Statistik":
+    st.subheader("Statistik Gudang")
+    total_barang, total_stok, total_nilai, terbanyak, tersedikit = st.session_state.gudang.statistik_gudang()
+
+    st.write("Total Jenis Barang:", total_barang)
+    st.write("Total Seluruh Stok:", total_stok)
+    st.write("Total Nilai Gudang: Rp", total_nilai)
+
+    if terbanyak:
+    st.write("Stok Terbanyak:", terbanyak.nama, "-", terbanyak.stok)
+
+    if tersedikit:
+    st.write("Stok Tersedikit:", tersedikit.nama, "-", tersedikit.stok)
+
 elif menu == "📅 Laporan Per Tanggal":
     st.header("📅 Laporan Aktivitas Per Tanggal")
 
