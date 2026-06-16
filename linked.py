@@ -49,11 +49,11 @@ class GudangLinkedList:
         self.riwayat = []
 
     def tambah_riwayat(self, aktivitas):
-    waktu = datetime.now()
-    self.riwayat.append({
-        "Tanggal": waktu.strftime("%d-%m-%Y"),
-        "Waktu": waktu.strftime("%H:%M:%S"),
-        "Aktivitas": aktivitas
+        waktu = datetime.now()
+        self.riwayat.append({
+            "Tanggal": waktu.strftime("%d-%m-%Y"),
+            "Waktu": waktu.strftime("%H:%M:%S"),
+            "Aktivitas": aktivitas
     })
     def tambah_barang(self, kode, nama, kategori, stok, harga):
         node_baru = BarangNode(kode, nama, kategori, stok, harga)
