@@ -33,6 +33,7 @@ with st.sidebar:
     menu = st.radio(
         "Menu",
         [
+            "🏠 Beranda",
             "➕ Tambah",
             "📋 Lihat",
             "🔍 Cari",
@@ -48,6 +49,15 @@ with st.sidebar:
     if st.button("Logout"):
         st.session_state["login"] = False
         st.rerun()
+
+if menu == "🏠 Beranda":
+    st.title("📦 SIGMALINK ( Sistem Informasi Gudang Manajemen Aset )")
+    st.markdown("SIGMALINK merupakan sistem informasi gudang yang dirancang untuk membantu proses pengelolaan inventaris secara lebih cepat, akurat, dan terorganisir. Aplikasi ini memudahkan pengguna dalam memantau stok barang, mengelola data inventaris, serta mendokumentasikan aktivitas gudang secara efisien.")
+    st.write("✅ Menyediakan riwayat aktivitas yang terstruktur.")
+    st.write("✅ Meningkatkan efisiensi operasional gudang.")
+    st.write("✅ Menghemat waktu pengelolaan stok barang.")
+    st.write("✅ Mengurangi risiko kesalahan pencatatan.")
+    st.write("✅ Mempermudah pencarian data.")
 
 if menu == "➕ Tambah":
     st.subheader("Tambah Data Barang")
