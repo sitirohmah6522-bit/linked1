@@ -2,6 +2,36 @@ import streamlit as st
 from datetime import datetime
 import pandas as pd
 from io import BytesIO
+import streamlit as st
+from datetime import datetime
+
+# LOGIN ADMIN
+def login_admin():
+    st.title("🔐 Login Admin SIGMALINK")
+
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
+
+    if st.button("Login"):
+        if username == "admin" and password == "12345":
+            st.session_state["login"] = True
+            st.success("Login berhasil!")
+            st.rerun()
+        else:
+            st.error("Username atau password salah!")
+
+if "login" not in st.session_state:
+    st.session_state["login"] = False
+
+if st.session_state["login"] == False:
+    login_admin()
+    st.stop()
+    
+with st.sidebar:
+    st.write("👤 Login sebagai Admin")
+    if st.button("Logout"):
+        st.session_state["login"] = False
+        st.rerun()
 
 class BarangNode:
     def __init__(self, kode, nama, kategori, stok, harga):
@@ -19,9 +49,12 @@ class GudangLinkedList:
         self.riwayat = []
 
     def tambah_riwayat(self, aktivitas):
-        waktu = datetime.now().strftime("%d-%m-%Y %H:%M:%S")
-        self.riwayat.append({"Waktu": waktu, "Aktivitas": aktivitas})
-
+    waktu = datetime.now()
+    self.riwayat.append({
+        "Tanggal": waktu.strftime("%d-%m-%Y"),
+        "Waktu": waktu.strftime("%H:%M:%S"),
+        "Aktivitas": aktivitas
+    })
     def tambah_barang(self, kode, nama, kategori, stok, harga):
         node_baru = BarangNode(kode, nama, kategori, stok, harga)
 
@@ -363,4 +396,24 @@ with tab9:
         st.table(st.session_state.gudang.riwayat)
     else:
         st.info("Belum ada riwayat transaksi.")
+
+
+tab_laporan = st.tabs(["📅 Laporan Per Tanggal"])[0]
+
+with tab_laporan:
+    st.header("📅 Laporan Aktivitas Per Tanggal")
+
+    tanggal_pilih = st.date_input("Pilih tanggal laporan")
+    tanggal_format = tanggal_pilih.strftime("%d-%m-%Y")
+
+    data_laporan = [
+        r for r in gudang.riwayat 
+        if r["Tanggal"] == tanggal_format
+    ]
+
+    if data_laporan:
+        st.success(f"Data laporan tanggal {tanggal_format}")
+        st.table(data_laporan)
+    else:
+        st.warning(f"Tidak ada aktivitas pada tanggal {tanggal_format}")
     
