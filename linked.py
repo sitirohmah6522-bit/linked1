@@ -69,7 +69,7 @@ if menu == "➕ Tambah":
             st.warning("Kode dan nama barang harus diisi.")
     
 elif menu == "📋 Lihat":
-     st.subheader("Data Barang Gudang")
+    st.subheader("Data Barang Gudang")
 
     data = st.session_state.gudang.tampilkan_barang()
 
