@@ -50,41 +50,170 @@ with st.sidebar:
         st.rerun()
 
 if menu == "➕ Tambah":
-    pass
-    # kode tambah barang
+    st.subheader("Tambah Data Barang")
 
+    kode = st.text_input("Kode Barang")
+    nama = st.text_input("Nama Barang")
+    kategori = st.selectbox("Kategori Barang", kategori_list)
+    stok = st.number_input("Stok Barang", min_value=0, step=1)
+    harga = st.number_input("Harga Barang", min_value=0, step=500)
+
+    if st.button("Tambah Barang"):
+        if kode and nama:
+            if st.session_state.gudang.cari_by_kode(kode):
+                st.warning("Kode barang sudah ada.")
+            else:
+                st.session_state.gudang.tambah_barang(kode, nama, kategori, stok, harga)
+                st.success("Barang berhasil ditambahkan!")
+        else:
+            st.warning("Kode dan nama barang harus diisi.")
+    
 elif menu == "📋 Lihat":
-    pass
-    # kode lihat barang
+     st.subheader("Data Barang Gudang")
+
+    data = st.session_state.gudang.tampilkan_barang()
+
+    if data:
+        st.table(data)
+
+        df = pd.DataFrame(data)
+
+        output = BytesIO()
+
+        with pd.ExcelWriter(output, engine="openpyxl") as writer:
+            df.to_excel(
+                writer,
+                index=False,
+                sheet_name="Data Gudang"
+            )
+
+        st.download_button(
+            label="📥 Export Data Excel",
+            data=output.getvalue(),
+            file_name="SIGMALINK_Data_Gudang.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
+
+    else:
+        st.info("Belum ada data barang.")
+
+    
 
 elif menu == "🔍 Cari":
-    pass
-    # kode cari barang
+    st.subheader("Cari Cepat Barang")
+    kata_kunci = st.text_input("Masukkan minimal 3 huruf kode atau nama")
+
+    if len(kata_kunci) >= 3:
+        hasil = st.session_state.gudang.cari_barang(kata_kunci)
+
+        if hasil:
+            data_hasil = []
+            for barang in hasil:
+                data_hasil.append({
+                    "Kode Barang": barang.kode,
+                    "Nama Barang": barang.nama,
+                    "Kategori": barang.kategori,
+                    "Stok": barang.stok,
+                    "Harga": barang.harga,
+                    "Total Nilai": barang.stok * barang.harga
+                })
+            st.success("Barang ditemukan!")
+            st.table(data_hasil)
+        else:
+            st.error("Barang tidak ditemukan.")
+    elif kata_kunci:
+        st.warning("Masukkan minimal 3 huruf.")
+
+
 
 elif menu == "📦 Tambah Stok":
-    pass
-    # kode tambah stok
+    st.subheader("Tambah Stok Barang")
 
+    kode_tambah = st.text_input("Kode Barang Tambah Stok")
+    jumlah_tambah = st.number_input("Jumlah Stok Masuk", min_value=1, step=1)
+
+    if st.button("Proses Tambah Stok"):
+        berhasil = st.session_state.gudang.tambah_stok(kode_tambah, jumlah_tambah)
+
+        if berhasil:
+            st.success("Stok berhasil ditambahkan.")
+        else:
+            st.error("Barang tidak ditemukan.")
+    
 elif menu == "➖ Kurangi Stok":
-    pass
-    # kode kurangi stok
+    st.subheader("Kurangi Stok Barang")
+
+    kode_kurang = st.text_input("Kode Barang Kurangi Stok")
+    jumlah_kurang = st.number_input("Jumlah Stok Keluar", min_value=1, step=1)
+
+    if st.button("Proses Kurangi Stok"):
+        hasil = st.session_state.gudang.kurangi_stok(kode_kurang, jumlah_kurang)
+
+        if hasil == "berhasil":
+            st.success("Stok berhasil dikurangi.")
+        elif hasil == "stok_kurang":
+            st.warning("Stok tidak mencukupi.")
+        else:
+            st.error("Barang tidak ditemukan.")
+    
 
 elif menu == "✏️ Edit/Hapus":
     pass
     # kode edit hapus
 
 elif menu == "⚠️ Stok Menipis":
-    pass
-    # kode stok menipis
+    st.subheader("Edit dan Hapus Barang")
 
+    kode_edit = st.text_input("Masukkan Kode Barang yang Ingin Diedit / Dihapus")
+    barang_edit = st.session_state.gudang.cari_by_kode(kode_edit)
+
+    if barang_edit:
+        nama_baru = st.text_input("Nama Baru", value=barang_edit.nama)
+        kategori_baru = st.selectbox(
+            "Kategori Baru",
+            kategori_list,
+            index=kategori_list.index(barang_edit.kategori)
+        )
+        stok_baru = st.number_input("Stok Baru", min_value=0, step=1, value=barang_edit.stok)
+        harga_baru = st.number_input("Harga Baru", min_value=0, step=500, value=barang_edit.harga)
+
+        if st.button("Simpan Perubahan"):
+            berhasil = st.session_state.gudang.edit_barang(
+                kode_edit, nama_baru, kategori_baru, stok_baru, harga_baru
+            )
+
+            if berhasil:
+                st.success("Data barang berhasil diedit.")
+
+        if st.button("Hapus Barang"):
+            berhasil = st.session_state.gudang.hapus_barang(kode_edit)
+
+            if berhasil:
+                st.success("Barang berhasil dihapus.")
+                st.rerun()
+
+    elif kode_edit:
+        st.error("Barang tidak ditemukan.")
+   
 elif menu == "📊 Statistik":
-    pass
-    # kode statistik
+    st.subheader("Notifikasi Stok Menipis")
 
+    data_menipis = st.session_state.gudang.stok_menipis()
+
+    if data_menipis:
+        st.warning("Ada barang dengan stok menipis!")
+        st.table(data_menipis)
+    else:
+        st.success("Tidak ada stok yang menipis.")
+
+    
 elif menu == "🕒 Riwayat":
-    pass
-    # kode riwayat
-       
+    st.subheader("Riwayat Transaksi")
+
+    if st.session_state.gudang.riwayat:
+        st.table(st.session_state.gudang.riwayat)
+    else:
+        st.info("Belum ada riwayat transaksi.")
 
 class BarangNode:
     def __init__(self, kode, nama, kategori, stok, harga):
@@ -259,196 +388,6 @@ if "gudang" not in st.session_state:
     st.session_state.gudang = GudangLinkedList()
 
 kategori_list = ["Makanan", "Minuman", "Snack", "Sembako", "Peralatan", "Lainnya"]
-
-tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9 = st.tabs([
-    "➕ Tambah",
-    "📋 Lihat",
-    "🔍 Cari",
-    "📥 Tambah Stok",
-    "➖ Kurangi Stok",
-    "✏️ Edit/Hapus",
-    "⚠️ Stok Menipis",
-    "📊 Statistik",
-    "🕒 Riwayat"
-])
-
-with tab1:
-    st.subheader("Tambah Data Barang")
-
-    kode = st.text_input("Kode Barang")
-    nama = st.text_input("Nama Barang")
-    kategori = st.selectbox("Kategori Barang", kategori_list)
-    stok = st.number_input("Stok Barang", min_value=0, step=1)
-    harga = st.number_input("Harga Barang", min_value=0, step=500)
-
-    if st.button("Tambah Barang"):
-        if kode and nama:
-            if st.session_state.gudang.cari_by_kode(kode):
-                st.warning("Kode barang sudah ada.")
-            else:
-                st.session_state.gudang.tambah_barang(kode, nama, kategori, stok, harga)
-                st.success("Barang berhasil ditambahkan!")
-        else:
-            st.warning("Kode dan nama barang harus diisi.")
-
-
-with tab2:
-    st.subheader("Data Barang Gudang")
-
-    data = st.session_state.gudang.tampilkan_barang()
-
-    if data:
-        st.table(data)
-
-        df = pd.DataFrame(data)
-
-        output = BytesIO()
-
-        with pd.ExcelWriter(output, engine="openpyxl") as writer:
-            df.to_excel(
-                writer,
-                index=False,
-                sheet_name="Data Gudang"
-            )
-
-        st.download_button(
-            label="📥 Export Data Excel",
-            data=output.getvalue(),
-            file_name="SIGMALINK_Data_Gudang.xlsx",
-            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        )
-
-    else:
-        st.info("Belum ada data barang.")
-
-with tab3:
-    st.subheader("Cari Cepat Barang")
-    kata_kunci = st.text_input("Masukkan minimal 3 huruf kode atau nama")
-
-    if len(kata_kunci) >= 3:
-        hasil = st.session_state.gudang.cari_barang(kata_kunci)
-
-        if hasil:
-            data_hasil = []
-            for barang in hasil:
-                data_hasil.append({
-                    "Kode Barang": barang.kode,
-                    "Nama Barang": barang.nama,
-                    "Kategori": barang.kategori,
-                    "Stok": barang.stok,
-                    "Harga": barang.harga,
-                    "Total Nilai": barang.stok * barang.harga
-                })
-            st.success("Barang ditemukan!")
-            st.table(data_hasil)
-        else:
-            st.error("Barang tidak ditemukan.")
-    elif kata_kunci:
-        st.warning("Masukkan minimal 3 huruf.")
-
-
-with tab4:
-    st.subheader("Tambah Stok Barang")
-
-    kode_tambah = st.text_input("Kode Barang Tambah Stok")
-    jumlah_tambah = st.number_input("Jumlah Stok Masuk", min_value=1, step=1)
-
-    if st.button("Proses Tambah Stok"):
-        berhasil = st.session_state.gudang.tambah_stok(kode_tambah, jumlah_tambah)
-
-        if berhasil:
-            st.success("Stok berhasil ditambahkan.")
-        else:
-            st.error("Barang tidak ditemukan.")
-
-
-with tab5:
-    st.subheader("Kurangi Stok Barang")
-
-    kode_kurang = st.text_input("Kode Barang Kurangi Stok")
-    jumlah_kurang = st.number_input("Jumlah Stok Keluar", min_value=1, step=1)
-
-    if st.button("Proses Kurangi Stok"):
-        hasil = st.session_state.gudang.kurangi_stok(kode_kurang, jumlah_kurang)
-
-        if hasil == "berhasil":
-            st.success("Stok berhasil dikurangi.")
-        elif hasil == "stok_kurang":
-            st.warning("Stok tidak mencukupi.")
-        else:
-            st.error("Barang tidak ditemukan.")
-
-
-with tab6:
-    st.subheader("Edit dan Hapus Barang")
-
-    kode_edit = st.text_input("Masukkan Kode Barang yang Ingin Diedit / Dihapus")
-    barang_edit = st.session_state.gudang.cari_by_kode(kode_edit)
-
-    if barang_edit:
-        nama_baru = st.text_input("Nama Baru", value=barang_edit.nama)
-        kategori_baru = st.selectbox(
-            "Kategori Baru",
-            kategori_list,
-            index=kategori_list.index(barang_edit.kategori)
-        )
-        stok_baru = st.number_input("Stok Baru", min_value=0, step=1, value=barang_edit.stok)
-        harga_baru = st.number_input("Harga Baru", min_value=0, step=500, value=barang_edit.harga)
-
-        if st.button("Simpan Perubahan"):
-            berhasil = st.session_state.gudang.edit_barang(
-                kode_edit, nama_baru, kategori_baru, stok_baru, harga_baru
-            )
-
-            if berhasil:
-                st.success("Data barang berhasil diedit.")
-
-        if st.button("Hapus Barang"):
-            berhasil = st.session_state.gudang.hapus_barang(kode_edit)
-
-            if berhasil:
-                st.success("Barang berhasil dihapus.")
-                st.rerun()
-
-    elif kode_edit:
-        st.error("Barang tidak ditemukan.")
-
-
-with tab7:
-    st.subheader("Notifikasi Stok Menipis")
-
-    data_menipis = st.session_state.gudang.stok_menipis()
-
-    if data_menipis:
-        st.warning("Ada barang dengan stok menipis!")
-        st.table(data_menipis)
-    else:
-        st.success("Tidak ada stok yang menipis.")
-
-
-with tab8:
-    st.subheader("Statistik Gudang")
-
-    total_barang, total_stok, total_nilai, terbanyak, tersedikit = st.session_state.gudang.statistik_gudang()
-
-    st.write("Total Jenis Barang:", total_barang)
-    st.write("Total Seluruh Stok:", total_stok)
-    st.write("Total Nilai Gudang: Rp", total_nilai)
-
-    if terbanyak:
-        st.write("Stok Terbanyak:", terbanyak.nama, "-", terbanyak.stok)
-
-    if tersedikit:
-        st.write("Stok Tersedikit:", tersedikit.nama, "-", tersedikit.stok)
-
-
-with tab9:
-    st.subheader("Riwayat Transaksi")
-
-    if st.session_state.gudang.riwayat:
-        st.table(st.session_state.gudang.riwayat)
-    else:
-        st.info("Belum ada riwayat transaksi.")
 
 
 tab_laporan = st.tabs(["📅 Laporan Per Tanggal"])[0]
