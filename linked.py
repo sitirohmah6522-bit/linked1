@@ -60,24 +60,20 @@ if menu == "🏠 Beranda":
     st.write("✅ Mengurangi risiko kesalahan pencatatan.")
     st.write("✅ Mempermudah pencarian data.")
 
+kategori_list = ["Makanan", "Minuman", "Snack", "Sembako", "Peralatan", "Lainnya"]
+
 if menu == "➕ Tambah":
-    st.subheader("Tambah Data Barang")
+    st.header("Tambah Data Barang")
 
     kode = st.text_input("Kode Barang")
     nama = st.text_input("Nama Barang")
     kategori = st.selectbox("Kategori Barang", kategori_list)
     stok = st.number_input("Stok Barang", min_value=0, step=1)
-    harga = st.number_input("Harga Barang", min_value=0, step=500)
+    harga = st.number_input("Harga Barang", min_value=0, step=1000)
 
     if st.button("Tambah Barang"):
-        if kode and nama:
-            if st.session_state.gudang.cari_by_kode(kode):
-                st.warning("Kode barang sudah ada.")
-            else:
-                st.session_state.gudang.tambah_barang(kode, nama, kategori, stok, harga)
-                st.success("Barang berhasil ditambahkan!")
-        else:
-            st.warning("Kode dan nama barang harus diisi.")
+        st.session_state.gudang.tambah_barang(kode, nama, kategori, stok, harga)
+        st.success("Barang berhasil ditambahkan!")
     
 elif menu == "📋 Lihat":
     st.subheader("Data Barang Gudang")
@@ -408,7 +404,6 @@ st.set_page_config(page_title="Sistem Gudang Retail", page_icon="📦")
 if "gudang" not in st.session_state:
     st.session_state.gudang = GudangLinkedList()
 
-kategori_list = ["Makanan", "Minuman", "Snack", "Sembako", "Peralatan", "Lainnya"]
 
 
 
