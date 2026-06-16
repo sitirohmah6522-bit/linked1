@@ -159,8 +159,15 @@ class GudangLinkedList:
 
 st.set_page_config(page_title="Sistem Gudang Retail", page_icon="📦")
 
-st.title("📦 Sistem Gudang Retail Menggunakan Single Linked List")
-st.write("Aplikasi gudang retail dengan fitur tambah barang, lihat barang, cari barang, tambah stok, kurangi stok, edit barang, hapus barang, stok menipis, statistik, dan riwayat transaksi.")
+st.title("📦 SIGMALINK ( Sistem Informasi Gudang Manajemen Aset )")
+st.write("SIGMALINK merupakan sistem informasi gudang yang dirancang untuk membantu proses pengelolaan inventaris secara lebih cepat, akurat, dan terorganisir. Aplikasi ini memudahkan pengguna dalam memantau stok barang, mengelola data inventaris, serta mendokumentasikan aktivitas gudang secara efisien.
+✅ Menghemat waktu pengelolaan stok barang.
+✅ Mempermudah pencarian data inventaris.
+✅ Mengurangi risiko kesalahan pencatatan.
+✅ Membantu monitoring stok secara real-time.
+✅ Meningkatkan efisiensi operasional gudang.
+✅ Menyediakan riwayat aktivitas yang terstruktur.
+✅ Mendukung pengambilan keputusan berdasarkan data.")
 
 if "gudang" not in st.session_state:
     st.session_state.gudang = GudangLinkedList()
