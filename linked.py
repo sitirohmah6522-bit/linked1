@@ -165,10 +165,6 @@ elif menu == "➖ Kurangi Stok":
     
 
 elif menu == "✏️ Edit/Hapus":
-    pass
-    # kode edit hapus
-
-elif menu == "⚠️ Stok Menipis":
     st.subheader("Edit dan Hapus Barang")
 
     kode_edit = st.text_input("Masukkan Kode Barang yang Ingin Diedit / Dihapus")
@@ -201,8 +197,8 @@ elif menu == "⚠️ Stok Menipis":
 
     elif kode_edit:
         st.error("Barang tidak ditemukan.")
-   
-elif menu == "📊 Statistik":
+        
+elif menu == "⚠️ Stok Menipis":
     st.subheader("Notifikasi Stok Menipis")
 
     data_menipis = st.session_state.gudang.stok_menipis()
