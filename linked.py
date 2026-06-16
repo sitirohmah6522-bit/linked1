@@ -49,10 +49,6 @@ with st.sidebar:
         st.session_state["login"] = False
         st.rerun()
 
-        
-    if st.button("Logout"):
-        st.session_state["login"] = False
-        st.rerun()
 if menu == "➕ Tambah":
     pass
     # kode tambah barang
