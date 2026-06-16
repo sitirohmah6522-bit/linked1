@@ -42,6 +42,7 @@ with st.sidebar:
             "✏️ Edit/Hapus",
             "⚠️ Stok Menipis",
             "📊 Statistik",
+            "📅 Laporan Per Tanggal",
             "🕒 Riwayat"
         ]
     )
@@ -215,6 +216,24 @@ elif menu == "📊 Statistik":
         st.table(data_menipis)
     else:
         st.success("Tidak ada stok yang menipis.")
+
+
+elif menu == "📅 Laporan Per Tanggal":
+    st.header("📅 Laporan Aktivitas Per Tanggal")
+
+    tanggal_pilih = st.date_input("Pilih tanggal laporan")
+    tanggal_format = tanggal_pilih.strftime("%d-%m-%Y")
+
+    data_laporan = [
+        r for r in st.session_state.gudang.riwayat
+        if r["Tanggal"] == tanggal_format
+    ]
+
+    if data_laporan:
+        st.success(f"Data laporan tanggal {tanggal_format}")
+        st.table(data_laporan)
+    else:
+        st.warning(f"Tidak ada aktivitas pada tanggal {tanggal_format}")
 
     
 elif menu == "🕒 Riwayat":
@@ -392,22 +411,4 @@ if "gudang" not in st.session_state:
 kategori_list = ["Makanan", "Minuman", "Snack", "Sembako", "Peralatan", "Lainnya"]
 
 
-tab_laporan = st.tabs(["📅 Laporan Per Tanggal"])[0]
 
-with tab_laporan:
-    st.header("📅 Laporan Aktivitas Per Tanggal")
-
-    tanggal_pilih = st.date_input("Pilih tanggal laporan")
-    tanggal_format = tanggal_pilih.strftime("%d-%m-%Y")
-
-    data_laporan = [
-        r for r in st.session_state.gudang.riwayat
-        if r["Tanggal"] == tanggal_format
-    ]
-
-    if data_laporan:
-        st.success(f"Data laporan tanggal {tanggal_format}")
-        st.table(data_laporan)
-    else:
-        st.warning(f"Tidak ada aktivitas pada tanggal {tanggal_format}")
-    
