@@ -407,7 +407,7 @@ with tab_laporan:
     tanggal_format = tanggal_pilih.strftime("%d-%m-%Y")
 
     data_laporan = [
-        r for r in gudang.riwayat 
+        r for r in st.session_state.gudang.riwayat
         if r["Tanggal"] == tanggal_format
     ]
 
