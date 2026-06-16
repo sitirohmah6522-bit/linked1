@@ -49,30 +49,39 @@ with st.sidebar:
         st.session_state["login"] = False
         st.rerun()
 if menu == "➕ Tambah":
+    pass
     # kode tambah barang
 
 elif menu == "📋 Lihat":
+    pass
     # kode lihat barang
 
 elif menu == "🔍 Cari":
+    pass
     # kode cari barang
 
 elif menu == "📦 Tambah Stok":
+    pass
     # kode tambah stok
 
 elif menu == "➖ Kurangi Stok":
+    pass
     # kode kurangi stok
 
 elif menu == "✏️ Edit/Hapus":
+    pass
     # kode edit hapus
 
 elif menu == "⚠️ Stok Menipis":
+    pass
     # kode stok menipis
 
 elif menu == "📊 Statistik":
+    pass
     # kode statistik
 
 elif menu == "🕒 Riwayat":
+    pass
     # kode riwayat
        
 
