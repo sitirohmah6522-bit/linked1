@@ -51,30 +51,30 @@ with st.sidebar:
         if menu == "➕ Tambah":
     # kode tambah barang
 
-elif menu == "📋 Lihat":
+        elif menu == "📋 Lihat":
     # kode lihat barang
 
-elif menu == "🔍 Cari":
+        elif menu == "🔍 Cari":
     # kode cari barang
 
-elif menu == "📦 Tambah Stok":
+        elif menu == "📦 Tambah Stok":
     # kode tambah stok
 
-elif menu == "➖ Kurangi Stok":
+        elif menu == "➖ Kurangi Stok":
     # kode kurangi stok
 
-elif menu == "✏️ Edit/Hapus":
+        elif menu == "✏️ Edit/Hapus":
     # kode edit hapus
 
-elif menu == "⚠️ Stok Menipis":
+        elif menu == "⚠️ Stok Menipis":
     # kode stok menipis
 
-elif menu == "📊 Statistik":
+        elif menu == "📊 Statistik":
     # kode statistik
 
-elif menu == "🕒 Riwayat":
+        elif menu == "🕒 Riwayat":
     # kode riwayat
-    
+       
 
 class BarangNode:
     def __init__(self, kode, nama, kategori, stok, harga):
