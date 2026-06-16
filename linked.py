@@ -1,5 +1,7 @@
 import streamlit as st
 from datetime import datetime
+import pandas as pd
+from io import BytesIO
 
 class BarangNode:
     def __init__(self, kode, nama, kategori, stok, harga):
@@ -206,10 +208,30 @@ with tab1:
 
 with tab2:
     st.subheader("Data Barang Gudang")
+
     data = st.session_state.gudang.tampilkan_barang()
 
     if data:
         st.table(data)
+
+        df = pd.DataFrame(data)
+
+        output = BytesIO()
+
+        with pd.ExcelWriter(output, engine="openpyxl") as writer:
+            df.to_excel(
+                writer,
+                index=False,
+                sheet_name="Data Gudang"
+            )
+
+        st.download_button(
+            label="📥 Export Data Excel",
+            data=output.getvalue(),
+            file_name="SIGMALINK_Data_Gudang.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
+
     else:
         st.info("Belum ada data barang.")
 
